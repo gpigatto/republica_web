@@ -1,0 +1,31 @@
+.root {
+  display: 'flex';
+}
+
+.spacer {
+  flex-grow: 1;
+}
+
+.content {
+  flex-grow: 1;
+  padding-top: 80px;
+  padding-right: 25px;
+  padding-left: 25px;
+}
+
+.paper {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.closeMenuButton {
+  margin-left: 75% !important;
+  margin-top: 7px !important;
+  width: 50px;
+}
+
+.avatarLoadingCircle {
+  height: 30px !important;
+  width: 30px !important;
+}

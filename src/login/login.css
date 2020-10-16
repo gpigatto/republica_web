@@ -1,0 +1,40 @@
+.root {
+  height: 100vh;
+}
+
+.image {
+  background-image: url('../res/images/background_biru.jpeg');
+  /* background-image: url(https://source.unsplash.com/random); */
+  background-repeat: no-repeat;
+  /* background-color:  */
+  background-size: cover;
+  background-position: center;
+}
+
+.paperWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.loginPaper {
+  /* margin: ; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatar {
+  /* margin: ; */
+  /* background-color: ; */
+}
+
+.form {
+  width: 100%; 
+  /* Fix IE 11 issue. */
+  /* margin-top: ; */
+}
+
+.submit {
+  /* margin: ; */
+}
