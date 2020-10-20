@@ -1,7 +1,7 @@
 import firebase from '../../core/firebaseConfig';
 
 export async function firebaseCollectionListener (collection, callback) {
-  let database = firebase.firestore();
+  const database = firebase.firestore();
 
   try {
     database.collection(collection).onSnapshot(

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import firebase from '../core/firebaseConfig';
 
 import { AppBar, Toolbar, IconButton, Drawer, List, ListItem, ListItemText, CssBaseline, Avatar, CircularProgress, Dialog, DialogTitle, ListItemAvatar } from '@material-ui/core';
 
 import CloseIcon from '@material-ui/icons/Close';
 import MenuIcon from '@material-ui/icons/Menu';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import firebase from '../core/firebaseConfig';
 
 import { loginListener } from '../login/functions/loginListener';
 import { logout } from '../login/functions/logout';
@@ -27,7 +27,7 @@ class Home extends Component {
       selectedComponent: 0,
     }
   }
-  
+
   componentDidMount() {
     loginListener();
 
@@ -42,6 +42,7 @@ class Home extends Component {
 
   handleDrawer() {
     this.setState({
+
       mobileDrawer: !this.state.mobileDrawer
     });
   }
@@ -59,6 +60,8 @@ class Home extends Component {
   }
 
   render() {
+
+    const { menu, mobileDrawer, selectedComponent, userInformation } = this.state;
     return (
       <div className='root'>
         <CssBaseline />
@@ -73,37 +76,38 @@ class Home extends Component {
             >
               <MenuIcon />
             </IconButton>
-            <div className='spacer'/>
+            <div className='spacer' />
             <IconButton
               color="inherit"
               aria-label="Open drawer"
               edge="start"
               className='menuButton'
-              onClick={() => {this.handleMenu()}} 
+              onClick={() => {this.handleMenu()}}
             >
-              {this.state.userInformation ? 
-                <Avatar alt="Remy Sharp" src={this.state.userInformation.photoURL} />
-              :
+              {userInformation ?
+                <Avatar alt="Remy Sharp" src={userInformation.photoURL} />
+              : (
                 <Avatar>
                   <CircularProgress className='avatarLoadingCircle' />
                 </Avatar>
-              }
+              )}
             </IconButton>
           </Toolbar>
         </AppBar>
 
-        <Dialog 
-          onClose={() => {this.handleMenu()}} 
-          open={this.state.menu}
+        <Dialog
+          onClose={() => {this.handleMenu()}}
+          open={menu}
         >
           <DialogTitle>
             Configurações
           </DialogTitle>
           <List>
-            <ListItem 
-              autoFocus 
-              button 
-              onClick={() => logout()}>
+            <ListItem
+              autoFocus
+              button
+              onClick={() => logout()}
+            >
               <ListItemAvatar>
                 <Avatar>
                   <ExitToAppIcon />
@@ -117,14 +121,14 @@ class Home extends Component {
         <nav className='drawer'>
           <Drawer
             variant="temporary"
-            open={this.state.mobileDrawer}
+            open={mobileDrawer}
             onClose={() => this.handleDrawer()}
             ModalProps={{
               keepMounted: true,
             }}
           >
-            <IconButton 
-              onClick={() => this.handleDrawer()} 
+            <IconButton
+              onClick={() => this.handleDrawer()}
               className='closeMenuButton'
             >
               <CloseIcon />
@@ -141,9 +145,9 @@ class Home extends Component {
             </List>
           </Drawer>
         </nav>
-        
+
         <div className='content'>
-          {componentList[this.state.selectedComponent].component}
+          {componentList[selectedComponent].component}
         </div>
       </div>
     );

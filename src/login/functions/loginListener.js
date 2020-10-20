@@ -2,6 +2,35 @@ import firebase from '../../core/firebaseConfig';
 import routerHistory from '../../core/routerHistory';
 import { insertInFirebaseCollection } from '../../home/functions/insertInFirebaseCollection';
 
+function registerUserInDB(user) {
+  insertInFirebaseCollection(
+    'users',
+    {
+      authorized: false,
+      displayName: user.displayName,
+      email: user.email,
+      photoURL: user.photoURL,
+      uid: user.uid,
+    }
+  );
+}
+
+async function userExistsInDB(user) {
+  if (firebase.auth().currentUser) {
+    const database = firebase.firestore();
+
+    try {
+      const data = await database.collection('users').where('uid', '==', user.uid).get();
+
+      if (data.size === 0) {
+        registerUserInDB(user);
+      }
+    } catch(error) {
+      console.error(error);
+    }
+  }
+}
+
 export function loginListener () {
   firebase.auth().onAuthStateChanged(
     (user) => {
@@ -16,35 +45,6 @@ export function loginListener () {
       else {
         routerHistory.push("/login");
       }
-    }
-  );
-}
-
-async function userExistsInDB(user) {
-  if (firebase.auth().currentUser) {
-    let database = firebase.firestore();
-
-    try {
-      let data = await database.collection('users').where('uid', '==', user.uid).get();
-
-      if (data.size === 0) {
-        registerUserInDB(user);
-      } 
-    } catch(error) {
-      console.error(error);
-    }
-  }
-}
-
-function registerUserInDB(user) {
-  insertInFirebaseCollection(
-    'users', 
-    {
-      authorized: false,
-      displayName: user.displayName,
-      email: user.email,
-      photoURL: user.photoURL,
-      uid: user.uid,
     }
   );
 }
