@@ -4,37 +4,41 @@ import HomeIcon from '@material-ui/icons/Home';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 
-import AddTransaction from '../home/components/addTransaction';
-import TransactionList from '../home/components/transactionList';
-import TotalValue from '../home/components/totalValue';
+import AddTransaction from '../pages/home/components/addTransaction';
+import TransactionList from '../pages/home/components/transactionList';
+import TotalValue from '../pages/home/components/totalValue';
 import AddRecurringBill from '../recurringBills/components/addRecurringBill';
 import RecurringBillsList from '../recurringBills/components/recurringBillsList';
+import Bills from '../pages/home/components/bills';
 
-let componentList = [
+const componentList = [
   {
-    name: "Home",
+    name: 'Home',
     icon: HomeIcon,
-    component: <div>
-      <TotalValue />
-      <AddTransaction />
-      <TransactionList />
-    </div>
+    component: (
+      <>
+        <TotalValue />
+        <Bills />
+        <AddTransaction />
+        <TransactionList />
+      </>
+    ),
   },
   {
-    name: "Contas Recorrentes",
+    name: 'Contas Recorrentes',
     icon: MonetizationOnIcon,
-    component: <div>
-      <AddRecurringBill />
-      <RecurringBillsList />
-      <RecurringBillsList />
-    </div>
+    component: (
+      <div>
+        <AddRecurringBill />
+        <RecurringBillsList />
+        <RecurringBillsList />
+      </div>
+    ),
   },
   {
-    name: "Planilhas",
+    name: 'Planilhas',
     icon: ListAltIcon,
-    component: <div>
-      Test
-    </div>
+    component: <div> Test </div>,
   },
 ];
 

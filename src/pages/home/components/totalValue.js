@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import firebase from '../../core/firebaseConfig';
-
 import { Paper, Grid, Typography } from '@material-ui/core';
-
+import firebase from '../../../core/firebaseConfig';
 
 class TotalValue extends Component {
   constructor(props) {
@@ -12,13 +10,13 @@ class TotalValue extends Component {
 
     this.state = {
 
-    }
+    };
   }
 
   render() {
     return (
-      <Paper className='paper'>
-        <Grid 
+      <Paper className="paper">
+        <Grid
           container
           direction="row"
           justify="flex-start"
@@ -54,7 +52,5 @@ class TotalValue extends Component {
     );
   }
 }
-
-
 
 export default TotalValue;

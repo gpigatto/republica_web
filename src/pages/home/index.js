@@ -1,18 +1,32 @@
 import React, { Component } from 'react';
 
-import { AppBar, Toolbar, IconButton, Drawer, List, ListItem, ListItemText, CssBaseline, Avatar, CircularProgress, Dialog, DialogTitle, ListItemAvatar } from '@material-ui/core';
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  CssBaseline,
+  Avatar,
+  CircularProgress,
+  Dialog,
+  DialogTitle,
+  ListItemAvatar,
+} from '@material-ui/core';
 
 import CloseIcon from '@material-ui/icons/Close';
 import MenuIcon from '@material-ui/icons/Menu';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import firebase from '../core/firebaseConfig';
+import firebase from '../../core/firebaseConfig';
 
 import { loginListener } from '../login/functions/loginListener';
 import { logout } from '../login/functions/logout';
 import { getUserInformation } from './functions/getUserInformation';
 
 import './home.css';
-import componentList from '../shared/componentList';
+import componentList from '../../shared/componentList';
 
 class Home extends Component {
   constructor(props) {
@@ -25,7 +39,7 @@ class Home extends Component {
       mobileDrawer: false,
       menu: false,
       selectedComponent: 0,
-    }
+    };
   }
 
   componentDidMount() {
@@ -34,61 +48,71 @@ class Home extends Component {
     this._getUserInformation();
   }
 
-  async _getUserInformation() {
-    this.setState({
-      userInformation: await getUserInformation()
-    })
-  }
-
   handleDrawer() {
+    const { mobileDrawer } = this.state;
     this.setState({
-
-      mobileDrawer: !this.state.mobileDrawer
+      mobileDrawer: !mobileDrawer,
     });
   }
 
   handleMenu() {
+    const { menu } = this.state;
+
     this.setState({
-      menu: !this.state.menu
+      menu: !menu,
+    });
+  }
+
+  async _getUserInformation() {
+    this.setState({
+      userInformation: await getUserInformation(),
     });
   }
 
   selectComponent(index) {
     this.setState({
-      selectedComponent: index
-    }, () => {this.handleDrawer()});
+      selectedComponent: index,
+    });
+
+    this.handleDrawer();
   }
 
   render() {
-
-    const { menu, mobileDrawer, selectedComponent, userInformation } = this.state;
+    const {
+      menu,
+      mobileDrawer,
+      selectedComponent,
+      userInformation,
+    } = this.state;
     return (
-      <div className='root'>
+      <div className="root">
         <CssBaseline />
-        <AppBar position="fixed" className='appBar'>
+        <AppBar position="fixed" className="appBar">
           <Toolbar>
             <IconButton
               color="inherit"
               aria-label="Open drawer"
               edge="start"
               onClick={() => this.handleDrawer()}
-              className='menuButton'
+              className="menuButton"
             >
               <MenuIcon />
             </IconButton>
-            <div className='spacer' />
+            <div className="spacer" />
             <IconButton
               color="inherit"
               aria-label="Open drawer"
               edge="start"
-              className='menuButton'
-              onClick={() => {this.handleMenu()}}
+              className="menuButton"
+              onClick={() => {
+                this.handleMenu();
+              }}
             >
-              {userInformation ?
+              {userInformation ? (
                 <Avatar alt="Remy Sharp" src={userInformation.photoURL} />
-              : (
+              ) : (
                 <Avatar>
-                  <CircularProgress className='avatarLoadingCircle' />
+                  <CircularProgress className="avatarLoadingCircle" />
                 </Avatar>
               )}
             </IconButton>
@@ -96,18 +120,14 @@ class Home extends Component {
         </AppBar>
 
         <Dialog
-          onClose={() => {this.handleMenu()}}
+          onClose={() => {
+            this.handleMenu();
+          }}
           open={menu}
         >
-          <DialogTitle>
-            Configurações
-          </DialogTitle>
+          <DialogTitle>Configurações</DialogTitle>
           <List>
-            <ListItem
-              autoFocus
-              button
-              onClick={() => logout()}
-            >
+            <ListItem autoFocus button onClick={() => logout()}>
               <ListItemAvatar>
                 <Avatar>
                   <ExitToAppIcon />
@@ -118,7 +138,7 @@ class Home extends Component {
           </List>
         </Dialog>
 
-        <nav className='drawer'>
+        <nav className="drawer">
           <Drawer
             variant="temporary"
             open={mobileDrawer}
@@ -129,16 +149,16 @@ class Home extends Component {
           >
             <IconButton
               onClick={() => this.handleDrawer()}
-              className='closeMenuButton'
+              className="closeMenuButton"
             >
               <CloseIcon />
             </IconButton>
-            <div style={{width: '250px'}} />
+            <div style={{ width: '250px' }} />
             <List>
               {componentList.map((component, index) => (
                 <ListItem button onClick={() => this.selectComponent(index)}>
                   <component.icon />
-                  <div style={{width: '10px'}} />
+                  <div style={{ width: '10px' }} />
                   <ListItemText primary={component.name} />
                 </ListItem>
               ))}
@@ -146,7 +166,7 @@ class Home extends Component {
           </Drawer>
         </nav>
 
-        <div className='content'>
+        <div className="content">
           {componentList[selectedComponent].component}
         </div>
       </div>

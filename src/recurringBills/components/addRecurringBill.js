@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import firebase from '../../core/firebaseConfig';
 
 import { Paper, Button, TextField, Grid, Select, MenuItem, Avatar, InputLabel } from '@material-ui/core';
 
 import HomeIcon from '@material-ui/icons/Home';
 
 import CurrencyTextField from '@unicef/material-ui-currency-textfield';
+import firebase from '../../core/firebaseConfig';
 
-import { getUserList } from '../../home/functions/getUserList';
-import { insertInFirebaseCollection } from '../../home/functions/insertInFirebaseCollection';
+import { getUserList } from '../../pages/home/functions/getUserList';
+import { insertInFirebaseCollection } from '../../pages/home/functions/insertInFirebaseCollection';
 
 import './addRecurringBill.css';
 
@@ -26,7 +26,7 @@ class AddRecurringBill extends Component {
       description: '',
       value: 0,
       date: this.currentDate,
-    }
+    };
   }
 
   componentDidMount() {
@@ -35,8 +35,8 @@ class AddRecurringBill extends Component {
 
   async _getUserList() {
     this.setState({
-      userList: await getUserList()
-    })
+      userList: await getUserList(),
+    });
   }
 
   handleReceiverChange = (event) => {
@@ -62,7 +62,7 @@ class AddRecurringBill extends Component {
       value: event.target.value,
     });
   };
-  
+
   addTransaction() {
     insertInFirebaseCollection(
       'recurringBills',
@@ -71,13 +71,13 @@ class AddRecurringBill extends Component {
         debtor: this.state.debtor,
         description: this.state.description,
         value: this.state.value,
-      }
+      },
     );
   }
 
   render() {
     return (
-      <Paper className='paper'>
+      <Paper className="paper">
         <Grid
           container
           direction="row"
@@ -86,14 +86,14 @@ class AddRecurringBill extends Component {
           spacing={2}
         >
           <Grid item xs={6} lg={2}>
-            <InputLabel className='selectLabel'>Receiver</InputLabel>
-            <Select  
+            <InputLabel className="selectLabel">Receiver</InputLabel>
+            <Select
               fullWidth
-              variant='outlined'
+              variant="outlined"
               onChange={this.handleReceiverChange}
               value={this.state.receiver}
             >
-              <MenuItem value={'everyone'}>
+              <MenuItem value="everyone">
                 <Grid
                   container
                   direction="row"
@@ -102,20 +102,19 @@ class AddRecurringBill extends Component {
                   spacing={2}
                 >
                   <Grid item>
-                    <Avatar className='avatarImage'>
-                      <HomeIcon className='avatarImage' />
+                    <Avatar className="avatarImage">
+                      <HomeIcon className="avatarImage" />
                     </Avatar>
                   </Grid>
-                  <Grid >
-                    Casa  
+                  <Grid>
+                    Casa
                   </Grid>
                 </Grid>
               </MenuItem>
               {
-                this.state.userList == null ?
-                  <div /> 
-                :
-                  this.state.userList.map(
+                this.state.userList == null
+                  ? <div />
+                  : this.state.userList.map(
                     (user) => (
                       <MenuItem value={user.uid}>
                         <Grid
@@ -126,30 +125,30 @@ class AddRecurringBill extends Component {
                           spacing={2}
                         >
                           <Grid item>
-                            <Avatar 
-                              className='avatarImage'
+                            <Avatar
+                              className="avatarImage"
                               src={user.photoURL}
                             />
                           </Grid>
                           <Grid>
-                            {user.displayName}  
+                            {user.displayName}
                           </Grid>
                         </Grid>
                       </MenuItem>
-                    )
+                    ),
                   )
               }
             </Select>
           </Grid>
           <Grid item xs={6} lg={2}>
-            <InputLabel className='selectLabel'>Debtor</InputLabel>
-            <Select  
+            <InputLabel className="selectLabel">Debtor</InputLabel>
+            <Select
               fullWidth
-              variant='outlined'
+              variant="outlined"
               onChange={this.handleDebtorChange}
               value={this.state.debtor}
             >
-              <MenuItem value={'everyone'}>
+              <MenuItem value="everyone">
                 <Grid
                   container
                   direction="row"
@@ -158,20 +157,19 @@ class AddRecurringBill extends Component {
                   spacing={2}
                 >
                   <Grid item>
-                    <Avatar className='avatarImage'>
-                      <HomeIcon className='avatarImage' />
+                    <Avatar className="avatarImage">
+                      <HomeIcon className="avatarImage" />
                     </Avatar>
                   </Grid>
-                  <Grid >
-                    Casa  
+                  <Grid>
+                    Casa
                   </Grid>
                 </Grid>
               </MenuItem>
               {
-                this.state.userList == null ?
-                  <div /> 
-                :
-                  this.state.userList.map(
+                this.state.userList == null
+                  ? <div />
+                  : this.state.userList.map(
                     (user) => (
                       <MenuItem value={user.uid}>
                         <Grid
@@ -182,25 +180,25 @@ class AddRecurringBill extends Component {
                           spacing={2}
                         >
                           <Grid item>
-                            <Avatar 
-                              className='avatarImage'
+                            <Avatar
+                              className="avatarImage"
                               src={user.photoURL}
                             />
                           </Grid>
                           <Grid>
-                            {user.displayName}  
+                            {user.displayName}
                           </Grid>
                         </Grid>
                       </MenuItem>
-                    )
+                    ),
                   )
               }
             </Select>
           </Grid>
           <Grid item xs={6} lg={5}>
-            <InputLabel className='selectLabel'>Description</InputLabel>
-            <TextField 
-              variant="outlined" 
+            <InputLabel className="selectLabel">Description</InputLabel>
+            <TextField
+              variant="outlined"
               fullWidth
               placeholder="description..."
               value={this.state.description}
@@ -208,9 +206,9 @@ class AddRecurringBill extends Component {
             />
           </Grid>
           <Grid item xs={6} lg={2}>
-            <InputLabel className='selectLabel'>Value</InputLabel>
+            <InputLabel className="selectLabel">Value</InputLabel>
             <CurrencyTextField
-              className='currencyTextField'
+              className="currencyTextField"
               variant="outlined"
               currencySymbol="R$"
               outputFormat="number"
@@ -226,10 +224,10 @@ class AddRecurringBill extends Component {
               alignItems="flex-end"
             >
               <Grid item>
-                <Button 
-                  className='buttonSize'
+                <Button
+                  className="buttonSize"
                   fullWidth
-                  onClick={() => {this.addTransaction()}}
+                  onClick={() => { this.addTransaction(); }}
                 >
                   Add
                 </Button>

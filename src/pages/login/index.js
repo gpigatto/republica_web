@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import firebase from '../core/firebaseConfig';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 
 import Avatar from '@material-ui/core/Avatar';
@@ -10,11 +9,13 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
+import firebase from '../../core/firebaseConfig';
 
-import { firebaseLoginConfig } from '../core/firebaseLoginConfig';
+import { firebaseLoginConfig } from '../../core/firebaseLoginConfig';
 import { loginListener } from './functions/loginListener';
 
 import './login.css';
+import routerHistory from '../../core/routerHistory';
 
 class Login extends Component {
   componentDidMount() {
@@ -24,24 +25,21 @@ class Login extends Component {
   render() {
     return (
       <div>
-        <Grid 
-          container 
-          component="main" 
-          className='root'
-        >
+        <Grid container component="main" className="root">
           <CssBaseline />
           <Image />
-          <Grid 
-            item xs={12} 
-            sm={8} 
-            md={5} 
-            component={Paper} 
-            elevation={6} 
-            square 
-            className='paperWrapper'
+          <Grid
+            item
+            xs={12}
+            sm={8}
+            md={5}
+            component={Paper}
+            elevation={6}
+            square
+            className="paperWrapper"
           >
-            <div className='loginPaper'>
-              <Avatar className='avatar'>
+            <div className="loginPaper">
+              <Avatar className="avatar">
                 <LockOutlinedIcon />
               </Avatar>
               <Typography component="h1" variant="h5">
@@ -57,39 +55,30 @@ class Login extends Component {
 }
 
 function Image() {
-  return (
-    <Grid 
-      item 
-      xs={false} 
-      sm={4} 
-      md={7} 
-      className='image' 
-    />
-  );
+  return <Grid item xs={false} sm={4} md={7} className="image" />;
 }
 
+const signIn = () => firebase.auth();
+const redirect = () => firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    routerHistory.push('/');
+  }
+});
 function Form() {
   return (
-    <form className='form' noValidate>
-      <StyledFirebaseAuth 
-        uiConfig = { firebaseLoginConfig }
-        firebaseAuth = { firebase.auth() }
+    <form className="form" noValidate>
+      <StyledFirebaseAuth
+        uiConfig={firebaseLoginConfig}
+        firebaseAuth={signIn()}
+        uiCallback={() => redirect()}
       />
       <Box mt={5}>
-        <Typography 
-          variant="body2" 
-          color="textSecondary" 
-          align="center"
-        >
+        <Typography variant="body2" color="textSecondary" align="center">
           {'Copyright © '}
-          <Link 
-            color="inherit" 
-            href="https://github.com/gpigatto"
-          >
+          <Link color="inherit" href="https://github.com/gpigatto">
             Gabriel Pigatto
           </Link>
-          {' '}
-          {new Date().getFullYear()}
+          {` ${new Date().getFullYear()}`}
           {'.'}
         </Typography>
       </Box>

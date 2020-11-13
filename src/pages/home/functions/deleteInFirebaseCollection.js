@@ -1,4 +1,4 @@
-import firebase from '../../core/firebaseConfig';
+import firebase from '../../../core/firebaseConfig';
 
 export function deleteInFirebaseCollection(collection, id) {
   const database = firebase.firestore();

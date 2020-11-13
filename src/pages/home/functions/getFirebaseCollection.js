@@ -1,4 +1,4 @@
-import firebase from '../../core/firebaseConfig';
+import firebase from '../../../core/firebaseConfig';
 
 export async function getFirebaseCollection(collection) {
   const database = firebase.firestore();

@@ -1,11 +1,22 @@
+// eslint-disable-next-line max-classes-per-file
 import React, { Component } from 'react';
-import firebase from '../../core/firebaseConfig';
 
-import { Paper, Table, TableHead, TableRow, TableCell, TableBody, Avatar, Grid, IconButton } from '@material-ui/core';
+import {
+  Paper,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  Avatar,
+  Grid,
+  IconButton,
+} from '@material-ui/core';
 
 import HomeIcon from '@material-ui/icons/Home';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import firebase from '../../../core/firebaseConfig';
 
 import { firebaseCollectionListener } from '../functions/firebaseCollectionListener';
 import { getUserList } from '../functions/getUserList';
@@ -16,12 +27,19 @@ import './transactionList.css';
 
 class TransactionClass {
   id;
+
   debtorDisplayName;
+
   debtorPhotoURL;
+
   receiverDisplayName;
+
   receiverPhotoURL;
+
   description;
+
   value;
+
   sheet;
 }
 
@@ -35,7 +53,7 @@ class TransactionList extends Component {
       transactionList: [],
       userList: [],
       sheetList: [],
-    }
+    };
   }
 
   componentDidMount() {
@@ -45,58 +63,57 @@ class TransactionList extends Component {
 
   async _getUserList() {
     this.setState({
-      userList: await getUserList()
-    }, () => {
-      this._addCollectionListener();
-    })
+      userList: await getUserList(),
+    });
+    this._addCollectionListener();
   }
 
   _addCollectionListener() {
-    let self = this;
-    
-    firebaseCollectionListener(
-      'transaction', 
-      function(data) {
-        let _transactionListBase = data.docs.map(doc => ({...doc.data(), id: doc.id}));
+    const self = this;
 
-        self.setState({
-          transactionList: self._generateTransactionList(_transactionListBase)
-        });
-      }
-    );
+    firebaseCollectionListener('transaction', (data) => {
+      const _transactionListBase = data.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+
+      self.setState({
+        transactionList: self._generateTransactionList(_transactionListBase),
+      });
+    });
   }
 
   async _getSheetList() {
     this.setState({
-      sheetList: await getSheetList()
-    })
+      sheetList: await getSheetList(),
+    });
   }
-  
+
   _generateTransactionList(transactionListBase) {
-    var _transactionList = [];
-    
-    for(var i = 0; i < transactionListBase.length; i++) {
-      var _transaction = new TransactionClass();
+    const _transactionList = [];
+
+    for (let i = 0; i < transactionListBase.length; i += 1) {
+      const _transaction = new TransactionClass();
 
       _transaction.id = transactionListBase[i].id;
 
-      var _debtorData = this._searchUser(transactionListBase[i].debtor);
-      
-      if(_debtorData != null) {
+      const _debtorData = this._searchUser(transactionListBase[i].debtor);
+
+      if (_debtorData != null) {
         _transaction.debtorDisplayName = _debtorData.displayName;
         _transaction.debtorPhotoURL = _debtorData.photoURL;
       }
-      
-      var _receiverData = this._searchUser(transactionListBase[i].receiver);
 
-      if(_receiverData != null) {
+      const _receiverData = this._searchUser(transactionListBase[i].receiver);
+
+      if (_receiverData != null) {
         _transaction.receiverDisplayName = _receiverData.displayName;
         _transaction.receiverPhotoURL = _receiverData.photoURL;
       }
 
-      var _sheetData = this._searchSheet(transactionListBase[i].sheet);
+      const _sheetData = this._searchSheet(transactionListBase[i].sheet);
 
-      if(_sheetData != null) {
+      if (_sheetData != null) {
         _transaction.sheet = _sheetData.name;
       }
 
@@ -109,20 +126,20 @@ class TransactionList extends Component {
     return _transactionList;
   }
 
-  _searchUser(userUid){
-    var _userList = this.state.userList;
+  _searchUser(userUid) {
+    const _userList = this.state.userList;
 
-    for (var i = 0; i < _userList.length; i++) {
+    for (let i = 0; i < _userList.length; i++) {
       if (_userList[i].uid === userUid) {
         return _userList[i];
       }
     }
   }
 
-  _searchSheet(sheetID){
-    var _sheetList = this.state.sheetList;
+  _searchSheet(sheetID) {
+    const _sheetList = this.state.sheetList;
 
-    for (var i = 0; i < _sheetList.length; i++) {
+    for (let i = 0; i < _sheetList.length; i++) {
       if (_sheetList[i].id === sheetID) {
         return _sheetList[i];
       }
@@ -135,7 +152,7 @@ class TransactionList extends Component {
 
   render() {
     return (
-      <Paper className='paper table'>
+      <Paper className="paper table">
         <Table>
           <TableHead>
             <TableRow>
@@ -160,21 +177,19 @@ class TransactionList extends Component {
                     spacing={2}
                   >
                     <Grid item>
-                      <Avatar 
-                        className='avatarImage'
-                        src={transaction.receiverPhotoURL} 
+                      <Avatar
+                        className="avatarImage"
+                        src={transaction.receiverPhotoURL}
                       />
                     </Grid>
-                    <Grid>
-                      {transaction.receiverDisplayName}  
-                    </Grid>
+                    <Grid>{transaction.receiverDisplayName}</Grid>
                   </Grid>
                 </TableCell>
                 <TableCell>
                   <ArrowBackIcon />
                 </TableCell>
                 <TableCell>
-                  {transaction.debtorDisplayName != null ? 
+                  {transaction.debtorDisplayName != null ? (
                     <Grid
                       container
                       direction="row"
@@ -183,16 +198,14 @@ class TransactionList extends Component {
                       spacing={2}
                     >
                       <Grid item>
-                        <Avatar 
-                          className='avatarImage'
-                          src={transaction.debtorPhotoURL} 
+                        <Avatar
+                          className="avatarImage"
+                          src={transaction.debtorPhotoURL}
                         />
                       </Grid>
-                      <Grid>
-                        {transaction.debtorDisplayName}  
-                      </Grid>
-                    </Grid>                  
-                  :
+                      <Grid>{transaction.debtorDisplayName}</Grid>
+                    </Grid>
+                  ) : (
                     <Grid
                       container
                       direction="row"
@@ -201,29 +214,24 @@ class TransactionList extends Component {
                       spacing={2}
                     >
                       <Grid item>
-                        <Avatar className='avatarImage'>
-                          <HomeIcon className='avatarImage' />
+                        <Avatar className="avatarImage">
+                          <HomeIcon className="avatarImage" />
                         </Avatar>
                       </Grid>
-                      <Grid >
-                        Casa  
-                      </Grid>
+                      <Grid>Casa</Grid>
                     </Grid>
-                  }
+                  )}
                 </TableCell>
+                <TableCell>{transaction.description}</TableCell>
                 <TableCell>
-                  {transaction.description}
+                  R$
+                  {transaction.value}
                 </TableCell>
-                <TableCell>
-                  R$ {transaction.value}
-                </TableCell>
-                <TableCell>
-                  {transaction.sheet}
-                </TableCell>
+                <TableCell>{transaction.sheet}</TableCell>
                 <TableCell>
                   <IconButton
                     onClick={() => this._deleteTransaction(transaction.id)}
-                    className='menuButton'
+                    className="menuButton"
                   >
                     <DeleteForeverIcon />
                   </IconButton>
@@ -236,7 +244,5 @@ class TransactionList extends Component {
     );
   }
 }
-
-
 
 export default TransactionList;
